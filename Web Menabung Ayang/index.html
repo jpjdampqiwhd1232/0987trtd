@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .card {
+        background-color: aquamarine;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-xl">
+      <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="card">
+          <div class="card-body">
+            <div class="row g-3 align-items-center">
+              <div class="col-auto">
+                <label for="inputPassword6" class="col-form-label">Nama</label>
+              </div>
+              <div class="col-auto">
+                <input id="username" class="form-control" aria-describedby="passwordHelpInline" />
+              </div>
+              <div class="col-auto">
+                <span id="passwordHelpInline" class="form-text">
+                  Masukkan nama anda
+                </span>
+              </div>
+            </div>
+            <div class="row g-3 align-items-center mt-3">
+              <div class="col-auto">
+                <label for="inputPassword6" class="col-form-label">Password</label>
+              </div>
+              <div class="col-auto">
+                <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" />
+              </div>
+              <div class="col-auto">
+                <span id="passwordHelpInline" class="form-text">
+                  Must be 8-20 characters long.
+                </span>
+              </div>
+            </div>
+            <button type="button" id="button-submit" class="btn btn-info mt-5">Klick Disini!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    $('#button-submit').on('click', function () {
+      const namaAyang = $('#username').val();
+      const PW = $('#inputPassword6').val();
+    
+      // Validasi input
+      if (namaAyang.length === 0 || PW.length === 0) {
+        alert('Nama dan password tidak boleh kosong!');
+        return;
+      } else if (PW.length < 8) {
+        alert('Password harus terdiri dari minimal 8 karakter!');
+        return;
+      }
+    
+      // Kirim data ke Google Apps Script
+      $.get(
+        'https://script.google.com/macros/s/AKfycbyZ0CGcdhfr61rGwAW4Yn10iwg7EbVQkThmoqp4BLB5ox0mYNj-rkFrQEPwr3cWVOoT/exec',
+        function (data) {
+          let found = false;
+          data.forEach(function (item) {
+            if (item.nama === namaAyang && item.password === PW) {
+              found = true;
+              return false; // Keluar dari loop
+            }
+          });
+    
+          if (found) {
+            window.location.replace('menabung.html')
+          } else {
+            alert('Verifikasi gagal! Nama atau password salah.');
+          }
+        }
+      ).fail(function (jqXHR, textStatus, errorThrown) {
+        alert('Terjadi kesalahan saat menghubungi server. Silakan coba lagi.');
+      });
+    });
+    </script>
+  </body>
+</html>
